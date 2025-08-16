@@ -8,7 +8,9 @@
 		<a href="https://github.com/omar-dulaimi/prisma-valibot-generator/blob/master/LICENSE"><img alt="MIT" src="https://img.shields.io/badge/license-MIT-0a0a0a.svg"></a>
 		<img alt="TypeScript" src="https://img.shields.io/badge/types-TypeScript-blue.svg">
 		<img alt="Module formats" src="https://img.shields.io/badge/modules-ESM%20%2B%20CJS-444.svg">
+		<!-- Docs website temporarily disabled
 		<a href="https://omar-dulaimi.github.io/prisma-valibot-generator/"><img alt="Docs" src="https://img.shields.io/badge/docs-website-0ea5e9.svg"></a>
+		-->
 	</p>
 	<sub>
 		Prisma → Valibot generator: zero‑boilerplate validation for your models.<br/>
@@ -16,7 +18,7 @@
 	</sub>
 </div>
 
-> Docs: https://omar-dulaimi.github.io/prisma-valibot-generator/
+<!-- Docs website temporarily disabled: https://omar-dulaimi.github.io/prisma-valibot-generator/ -->
 
 ## Highlights
 
@@ -74,7 +76,9 @@ v.parse(UpdateUserSchema, { name: 'New Name' });
 
 ## Docs & recipes
 
+<!-- Docs website temporarily disabled:
 - Quick Start, concepts, and MVP notes: https://omar-dulaimi.github.io/prisma-valibot-generator/
+-->
 
 ## Sponsor ❤️
 

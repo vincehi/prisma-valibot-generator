@@ -90,5 +90,5 @@
     "url": "https://github.com/omar-dulaimi/prisma-valibot-generator/issues"
   },
   "homepage": "https://github.com/omar-dulaimi/prisma-valibot-generator#readme",
-  "private": true
+  "private": false
 }

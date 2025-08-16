@@ -1,0 +1,70 @@
+node_modules
+lib
+package
+npm-debug.log*
+prisma/generated
+coverage
+
+# Multi-provider test generated files
+prisma/schemas/*/generated/
+*.db
+*.sqlite
+*.sqlite3
+test-*-*
+manual-*-*
+legacy-output
+.docusaurus
+website/.docusaurus
+website/build
+
+# Test reports and logs
+test-report.json
+test-results.json
+*.log
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+logs
+yarn-debug.log*
+yarn-error.log*
+dev-debug.log
+# Dependency directories
+node_modules/
+# Environment variables
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+# OS specific
+
+# Task files
+# tasks.json
+# tasks/ 
+prisma/client
+debug-test

@@ -1,0 +1,1 @@
+<!-- Legacy feature_request.md has been superseded by feature_request.yml -->

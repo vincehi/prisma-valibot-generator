@@ -61,6 +61,7 @@ function buildSchemasForModel(model: DMMF.Model, enums: ReadonlyArray<DMMF.Datam
   lines.push(`export const ${model.name}Schema = v.object({`);
   lines.push(fullFields.join(',\n'));
   lines.push(`});`);
+  lines.push(`export type ${model.name}SchemaType = v.InferOutput<typeof ${model.name}Schema>;`);
   lines.push('');
 
   // Create validator (required fields only — heuristic: required w/o default/id/updatedAt)
@@ -70,6 +71,7 @@ function buildSchemasForModel(model: DMMF.Model, enums: ReadonlyArray<DMMF.Datam
   lines.push(`export const Create${model.name}Schema = v.object({`);
   lines.push(createFields.join(',\n'));
   lines.push(`});`);
+  lines.push(`export type Create${model.name}SchemaType = v.InferOutput<typeof Create${model.name}Schema>;`);
   lines.push('');
 
   // Update validator (all fields optional)
@@ -80,6 +82,7 @@ function buildSchemasForModel(model: DMMF.Model, enums: ReadonlyArray<DMMF.Datam
   lines.push(`export const Update${model.name}Schema = v.object({`);
   lines.push(updateFields.join(',\n'));
   lines.push(`});`);
+  lines.push(`export type Update${model.name}SchemaType = v.InferOutput<typeof Update${model.name}Schema>;`);
   lines.push('');
 
   return lines.join('\n');

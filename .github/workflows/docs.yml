@@ -62,8 +62,8 @@ jobs:
           echo "should_deploy=$SHOULD_DEPLOY" >> "$GITHUB_OUTPUT"
 
   build:
-  # Temporarily disabled: pause docs website builds
-  if: ${{ false }}
+    # Temporarily disabled: pause docs website builds
+    if: ${{ false }}
     needs: filter
     runs-on: ubuntu-latest
     steps:
@@ -85,8 +85,8 @@ jobs:
         with:
           path: website/build
   deploy:
-  # Temporarily disabled: pause docs website deployments
-  if: ${{ false }}
+    # Temporarily disabled: pause docs website deployments
+    if: ${{ false }}
     needs: build
     runs-on: ubuntu-latest
     environment:

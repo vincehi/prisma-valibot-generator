@@ -1,3 +1,9 @@
+## [1.1.0](https://github.com/omar-dulaimi/prisma-valibot-generator/compare/v1.0.0...v1.1.0) (2025-08-16)
+
+### 🚀 Features
+
+* **generator:** make generated schemas and types tree-shakable and export types for schema outputs ([8a1a076](https://github.com/omar-dulaimi/prisma-valibot-generator/commit/8a1a0761aef502732d69694ee8450abe2dd7e3a7))
+
 ## 1.0.0 (2025-08-16)
 
 ### 🚀 Features

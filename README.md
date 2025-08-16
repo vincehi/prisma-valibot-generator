@@ -74,7 +74,7 @@ v.parse(CreateUserSchema, { email: 'a@b.com' });
 v.parse(UpdateUserSchema, { name: 'New Name' });
 ```
 
-## Docs & recipes
+<!-- ## Docs & recipes -->
 
 <!-- Docs website temporarily disabled:
 - Quick Start, concepts, and MVP notes: https://omar-dulaimi.github.io/prisma-valibot-generator/

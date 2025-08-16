@@ -34,7 +34,7 @@ jobs:
         npm run gen-example
         npm run test:type-check
         npm run lint
-        npm run test:basic
+  npm run ci:test
         
     - name: Build package
       run: ./package.sh

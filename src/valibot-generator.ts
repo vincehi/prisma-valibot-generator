@@ -72,7 +72,6 @@ function modelFilename(modelName: string) {
 function buildObjectSchema(
 	name: string,
 	fields: ReadonlyArray<DMMF.Field>,
-	enums: ReadonlyArray<DMMF.DatamodelEnum>,
 	makeField: (f: DMMF.Field) => string,
 ): string[] {
 	const entries = fields
@@ -104,7 +103,7 @@ function buildSchemasForModel(
 
 	// Full model (all fields required)
 	lines.push(
-		...buildObjectSchema(`${model.name}Schema`, model.fields, enums, (f) => {
+		...buildObjectSchema(`${model.name}Schema`, model.fields, (f) => {
 			if (!f.isRequired) {
 				return `v.nullable(${mapFieldToValibot(f, enums)})`;
 			}
@@ -122,17 +121,12 @@ function buildSchemasForModel(
 			!f.isUpdatedAt,
 	);
 	lines.push(
-		...buildObjectSchema(
-			`Create${model.name}Schema`,
-			createFields,
-			enums,
-			(f) => {
-				if (f.isRequired) {
-					return mapFieldToValibot(f, enums);
-				}
-				return `v.optional(${mapFieldToValibot(f, enums)})`;
-			},
-		),
+		...buildObjectSchema(`Create${model.name}Schema`, createFields, (f) => {
+			if (f.isRequired) {
+				return mapFieldToValibot(f, enums);
+			}
+			return `v.optional(${mapFieldToValibot(f, enums)})`;
+		}),
 	);
 
 	// Update validator (all fields optional)
@@ -142,7 +136,6 @@ function buildSchemasForModel(
 		...buildObjectSchema(
 			`Update${model.name}Schema`,
 			updateFields,
-			enums,
 			(f) => `v.optional(${mapFieldToValibot(f, enums)})`,
 		),
 	);
@@ -179,18 +172,26 @@ function buildEnumsFile(enums: ReadonlyArray<DMMF.DatamodelEnum>): string {
 			})
 			.join(",\n");
 
-		const enumName = enm.name;
-		const schemaName = `${enumName}Enum`;
+		const enumName = `${enm.name}Enum`;
+		const picklistName = `${enm.name}Picklist`;
 
 		lines.push(`export enum ${enumName} {`);
 		lines.push(enumValues);
 		lines.push("}");
-		lines.push("");
 
-		// Créer le schéma Valibot avec v.enum
-		lines.push(`export const ${schemaName} = v.enum(${enumName});`);
+		// Créer le schéma Valibot avec v.picklist
+		const picklistValues = enm.values
+			.map((val) => {
+				const value = pickValue(val);
+				return `'${value}'`;
+			})
+			.join(", ");
+
 		lines.push(
-			`export type ${enumName}Type = v.InferOutput<typeof ${schemaName}>;`,
+			`export const ${picklistName} = v.picklist([${picklistValues}]);`,
+		);
+		lines.push(
+			`export type ${enumName}Type = v.InferOutput<typeof ${picklistName}>;`,
 		);
 		lines.push("");
 	}

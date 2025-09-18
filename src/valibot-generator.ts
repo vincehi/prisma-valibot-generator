@@ -49,7 +49,7 @@ function mapFieldToValibot(
 	if (field.kind === "enum") {
 		const enumDef = enums.find((e) => e.name === type);
 		if (enumDef) {
-			const constName = `${type}Enum`;
+			const constName = `${type}Picklist`;
 			base = constName;
 		} else {
 			base = "v.any()";
@@ -96,7 +96,9 @@ function buildSchemasForModel(
 	// Import enum schemas if this model uses any
 	const usedEnumNames = getUsedEnumNames(model);
 	if (usedEnumNames.length > 0) {
-		const importNames = usedEnumNames.map((name) => `${name}Enum`).join(", ");
+		const importNames = usedEnumNames
+			.map((name) => `${name}Picklist`)
+			.join(", ");
 		lines.push(`import { ${importNames} } from './enums';`);
 	}
 	lines.push("");

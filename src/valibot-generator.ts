@@ -113,7 +113,7 @@ function buildSchemasForModel(
 	const createFields = model.fields.filter(
 		(f) =>
 			isScalarOrEnum(f) &&
-			f.isRequired &&
+			// f.isRequired && //
 			!f.hasDefaultValue &&
 			!f.isId &&
 			!f.isUpdatedAt,
@@ -123,7 +123,12 @@ function buildSchemasForModel(
 			`Create${model.name}Schema`,
 			createFields,
 			enums,
-			(f) => mapFieldToValibot(f, enums),
+			(f) => {
+				if (f.isRequired) {
+					return mapFieldToValibot(f, enums);
+				}
+				return `v.optional(${mapFieldToValibot(f, enums)})`;
+			},
 		),
 	);
 

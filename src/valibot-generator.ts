@@ -103,6 +103,16 @@ function buildSchemasForModel(
 	}
 	lines.push("");
 
+	// Identifier les champs de clés étrangères
+	const foreignKeyFields = new Set<string>();
+	for (const field of model.fields) {
+		if (field.relationFromFields) {
+			for (const fkField of field.relationFromFields) {
+				foreignKeyFields.add(fkField);
+			}
+		}
+	}
+
 	// Full model (all fields required)
 	lines.push(
 		...buildObjectSchema(`${model.name}Schema`, model.fields, (f) => {
@@ -113,14 +123,15 @@ function buildSchemasForModel(
 		}),
 	);
 
-	// Create validator (required fields only — heuristic: required w/o default/id/updatedAt)
+	// Create validator (required fields only — heuristic: required w/o default/id/updatedAt/foreignKeys)
 	const createFields = model.fields.filter(
 		(f) =>
 			isScalarOrEnum(f) &&
 			// f.isRequired && //
 			!f.hasDefaultValue &&
 			!f.isId &&
-			!f.isUpdatedAt,
+			!f.isUpdatedAt &&
+			!foreignKeyFields.has(f.name), // Exclure les clés étrangères
 	);
 	lines.push(
 		...buildObjectSchema(`Create${model.name}Schema`, createFields, (f) => {
@@ -131,8 +142,10 @@ function buildSchemasForModel(
 		}),
 	);
 
-	// Update validator (all fields optional)
-	const updateFields = model.fields.filter((f) => !f.isId);
+	// Update validator (all fields optional, excluding foreign keys)
+	const updateFields = model.fields.filter(
+		(f) => !f.isId && !foreignKeyFields.has(f.name),
+	);
 
 	lines.push(
 		...buildObjectSchema(
@@ -248,21 +261,5 @@ export async function generateValibot(options: GeneratorOptions) {
 		);
 		logger.debug("[prisma-valibot] Wrote enums file");
 	}
-
-	// // Index barrel
-	// const indexLines: string[] = [];
-	// for (const model of models) {
-	// 	const fileBase = `./${modelFilename(model.name)}`;
-	// 	indexLines.push(`export * from '${fileBase.replace(/\\.ts$/, "")}';`);
-	// }
-	// if (enums.length > 0) {
-	// 	indexLines.push("export * from './enums';");
-	// }
-	// await fs.writeFile(
-	// 	path.join(generatedDir, "index.ts"),
-	// 	`${indexLines.join("\n")}\n`,
-	// 	"utf8",
-	// );
-	// logger.debug("[prisma-valibot] Wrote index barrel");
 	logger.info("Prisma Valibot: generation complete");
 }

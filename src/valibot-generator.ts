@@ -104,9 +104,12 @@ function buildSchemasForModel(
 
 	// Full model (all fields required)
 	lines.push(
-		...buildObjectSchema(`${model.name}Schema`, model.fields, enums, (f) =>
-			mapFieldToValibot(f, enums),
-		),
+		...buildObjectSchema(`${model.name}Schema`, model.fields, enums, (f) => {
+			if (!f.isRequired) {
+				return `v.nullable(${mapFieldToValibot(f, enums)})`;
+			}
+			return mapFieldToValibot(f, enums);
+		}),
 	);
 
 	// Create validator (required fields only — heuristic: required w/o default/id/updatedAt)

@@ -133,10 +133,12 @@ function buildSchemasForModel(
 	);
 
 	// Update validator (all fields optional)
+	const updateFields = model.fields.filter((f) => !f.isId);
+
 	lines.push(
 		...buildObjectSchema(
 			`Update${model.name}Schema`,
-			model.fields,
+			updateFields,
 			enums,
 			(f) => `v.optional(${mapFieldToValibot(f, enums)})`,
 		),

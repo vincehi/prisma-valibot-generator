@@ -27,8 +27,10 @@
   - `{Model}Schema` (all fields required)
   - `Create{Model}Schema` (required scalars only)
   - `Update{Model}Schema` (all fields optional)
+- Enum support: Dedicated `enums.ts` with `v.picklist()` + value exports
+- Relations excluded: Clean schemas without relation fields
 - Scalar mapping: String/Int/Float/Boolean/DateTime/Json/Decimal/BigInt/Bytes
-- Relations are `v.any()` in MVP (roadmap: relation handling)
+- Configurable: `enumValue` option for `@map` support
 
 ## Prerequisites
 
@@ -53,8 +55,9 @@ npm i -D prisma-valibot-generator
 
 ```prisma
 generator valibot {
-	provider = "prisma-valibot-generator"
-	output   = "./src/generated/valibot" // optional
+	provider  = "prisma-valibot-generator"
+	output    = "./src/generated/valibot" // optional
+	enumValue = "name" // optional: "name" (default) | "dbName" (for @map support)
 }
 ```
 
@@ -68,10 +71,11 @@ npx prisma generate
 
 ```ts
 import * as v from 'valibot';
-import { UserSchema, CreateUserSchema, UpdateUserSchema } from './src/generated/valibot';
+import { UserSchema, CreateUserSchema, UpdateUserSchema, RoleEnum } from './src/generated/valibot';
 
 v.parse(CreateUserSchema, { email: 'a@b.com' });
 v.parse(UpdateUserSchema, { name: 'New Name' });
+v.parse(RoleEnum, 'ADMIN');
 ```
 
 <!-- ## Docs & recipes -->

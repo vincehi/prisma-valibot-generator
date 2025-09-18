@@ -249,20 +249,20 @@ export async function generateValibot(options: GeneratorOptions) {
 		logger.debug("[prisma-valibot] Wrote enums file");
 	}
 
-	// Index barrel
-	const indexLines: string[] = [];
-	for (const model of models) {
-		const fileBase = `./${modelFilename(model.name)}`;
-		indexLines.push(`export * from '${fileBase.replace(/\\.ts$/, "")}';`);
-	}
-	if (enums.length > 0) {
-		indexLines.push("export * from './enums';");
-	}
-	await fs.writeFile(
-		path.join(generatedDir, "index.ts"),
-		`${indexLines.join("\n")}\n`,
-		"utf8",
-	);
-	logger.debug("[prisma-valibot] Wrote index barrel");
+	// // Index barrel
+	// const indexLines: string[] = [];
+	// for (const model of models) {
+	// 	const fileBase = `./${modelFilename(model.name)}`;
+	// 	indexLines.push(`export * from '${fileBase.replace(/\\.ts$/, "")}';`);
+	// }
+	// if (enums.length > 0) {
+	// 	indexLines.push("export * from './enums';");
+	// }
+	// await fs.writeFile(
+	// 	path.join(generatedDir, "index.ts"),
+	// 	`${indexLines.join("\n")}\n`,
+	// 	"utf8",
+	// );
+	// logger.debug("[prisma-valibot] Wrote index barrel");
 	logger.info("Prisma Valibot: generation complete");
 }

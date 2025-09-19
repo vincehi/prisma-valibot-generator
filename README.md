@@ -12,10 +12,10 @@
 		<a href="https://omar-dulaimi.github.io/prisma-valibot-generator/"><img alt="Docs" src="https://img.shields.io/badge/docs-website-0ea5e9.svg"></a>
 		-->
 	</p>
-	<sub>
-		Prisma → Valibot generator: zero‑boilerplate validation for your models.<br/>
-		🎯 Type-safe · 🧹 Clean schemas · 🔧 Configurable · 📏 Tree-shakeable
-	</sub>
+        <sub>
+                Prisma → Valibot generator: zero‑boilerplate validation for your models.<br/>
+                🎯 Type-safe · 🧹 Clean schemas · 🔧 Configurable · 📏 Tree-shakeable
+        </sub>
 </div>
 
 <!-- Docs website temporarily disabled: https://omar-dulaimi.github.io/prisma-valibot-generator/ -->
@@ -57,9 +57,9 @@ npm i -D prisma-valibot-generator
 
 ```prisma
 generator valibot {
-	provider  = "prisma-valibot-generator"
-	output    = "./src/generated/valibot" // optional
-	enumValue = "name" // optional: "name" (default) | "dbName" (for @map support)
+  provider  = "prisma-valibot-generator"
+  output    = "./src/generated/valibot" // optional
+  enumValue = "name" // optional: "name" (default) | "dbName" (for @map support)
 }
 ```
 

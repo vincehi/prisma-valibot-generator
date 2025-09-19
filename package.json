@@ -24,7 +24,7 @@
     "release:dry": "semantic-release --dry-run",
     "release:predict": "git fetch --tags --quiet && semantic-release --dry-run --no-ci --plugins @semantic-release/commit-analyzer",
     "release:predict:notes": "git fetch --tags --quiet && semantic-release --dry-run --no-ci --plugins @semantic-release/commit-analyzer,@semantic-release/release-notes-generator",
-    "ci:test": "npm run test:valibot",
+    "ci:test": "vitest run tests/ --reporter=verbose",
     "ci:build": "npm run gen-example",
     "docs:dev": "docusaurus start website",
     "docs:build": "node website/scripts/sync-changelog.js && node website/scripts/build-metrics.js && docusaurus build website",

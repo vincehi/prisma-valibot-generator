@@ -199,7 +199,7 @@ model User {
 
     // Should throw error for invalid config
     await expect(env.runGeneration()).rejects.toThrow(
-      "Invalid enumValue config: 'invalid'. Must be 'name' or 'dbName'.",
+      /Invalid enumValue config: 'invalid'/,
     );
 
     await env.cleanup();

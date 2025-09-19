@@ -22,9 +22,9 @@ const SCALAR_TO_V: Record<string, string> = {
   String: 'v.string()',
   Int: 'v.number()',
   Float: 'v.number()',
-  Decimal: 'v.number()',
+  Decimal: 'v.union([v.number(), v.string()])',
   Boolean: 'v.boolean()',
-  DateTime: 'v.date()',
+  DateTime: 'v.union([v.date(), v.string()])',
   Json: 'v.any()',
   BigInt: 'v.bigint()',
   Bytes: 'v.instance(Uint8Array)',
@@ -101,11 +101,12 @@ function buildSchemasForModel(
   }
   lines.push('');
 
-  // Full model (all fields required)
+  // Full model (nullable fields handled correctly)
   lines.push(
-    ...buildObjectSchema(`${model.name}Schema`, model.fields, (f) =>
-      mapFieldToValibot(f, enums),
-    ),
+    ...buildObjectSchema(`${model.name}Schema`, model.fields, (f) => {
+      const base = mapFieldToValibot(f, enums);
+      return f.isRequired ? base : `v.nullable(${base})`;
+    }),
   );
 
   // Create validator (required fields only — heuristic: required w/o default/id/updatedAt)
@@ -181,9 +182,10 @@ function buildEnumsFile(
       return val;
     });
 
-    const valuesList = validatedValues
-      .map((val) => `'${pickValue(val)}'`)
-      .join(', ');
+    const uniqueValues = Array.from(
+      new Set(validatedValues.map((val) => pickValue(val))),
+    );
+    const valuesList = uniqueValues.map((val) => `'${val}'`).join(', ');
     const valuesConst = `${enm.name}Values`;
     const constName = `${enm.name}Enum`;
     lines.push(`export const ${valuesConst} = [${valuesList}] as const;`);

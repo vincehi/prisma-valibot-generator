@@ -1,6 +1,9 @@
 import * as v from 'valibot';
 import { describe, expect, it } from 'vitest';
-import { PrismaSchemaGenerator, TestEnvironment } from './helpers/mock-generators';
+import {
+  PrismaSchemaGenerator,
+  TestEnvironment,
+} from './helpers/mock-generators';
 
 describe('Prisma Valibot Generator - MVP', () => {
   it('generates and validates basic User schemas in isolated env', async () => {
@@ -15,9 +18,9 @@ describe('Prisma Valibot Generator - MVP', () => {
     writeFileSync(env.schemaPath, schema);
     await env.runGeneration();
 
-  const mod = await import(env.outputDir + '/index.ts');
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { UserSchema, CreateUserSchema, UpdateUserSchema } = mod as any;
+    const mod = await import(env.outputDir + '/index.ts');
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { UserSchema, CreateUserSchema, UpdateUserSchema } = mod as any;
 
     const missing = v.safeParse(UserSchema, { email: 'a@b.com' });
     expect(missing.success).toBe(false);

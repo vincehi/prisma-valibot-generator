@@ -8,6 +8,5 @@ export {
   ConfigGenerator,
   MockDMMF,
   PrismaSchemaGenerator,
-  TestEnvironment
+  TestEnvironment,
 } from './mock-generators';
-

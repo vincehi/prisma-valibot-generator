@@ -6,7 +6,11 @@
  * - DEBUG=1|true
  * - DEBUG including the substring "prisma-valibot" (e.g. DEBUG=prisma-valibot)
  */
-const rawDebug = (process.env.DEBUG_PRISMA_VALIBOT ?? process.env.DEBUG ?? '').toLowerCase();
+const rawDebug = (
+  process.env.DEBUG_PRISMA_VALIBOT ??
+  process.env.DEBUG ??
+  ''
+).toLowerCase();
 
 function parseEnabled(val: string): boolean {
   if (!val) return false;

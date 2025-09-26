@@ -12,23 +12,27 @@
 		<a href="https://omar-dulaimi.github.io/prisma-valibot-generator/"><img alt="Docs" src="https://img.shields.io/badge/docs-website-0ea5e9.svg"></a>
 		-->
 	</p>
-	<sub>
-		Prisma → Valibot generator: zero‑boilerplate validation for your models.<br/>
-		MVP: Full | Create | Update validators · small, tree‑shakeable runtime
-	</sub>
+        <sub>
+                Prisma → Valibot generator: zero‑boilerplate validation for your models.<br/>
+                🎯 Type-safe · 🧹 Clean schemas · 🔧 Configurable · 📏 Tree-shakeable
+        </sub>
 </div>
 
 <!-- Docs website temporarily disabled: https://omar-dulaimi.github.io/prisma-valibot-generator/ -->
 
 ## Highlights
 
-- Generate Valibot schemas from your Prisma models
-- Per-model exports:
+- **🚀 Generate Valibot schemas** from your Prisma models automatically
+- **📦 Per-model exports**:
   - `{Model}Schema` (all fields required)
   - `Create{Model}Schema` (required scalars only)
   - `Update{Model}Schema` (all fields optional)
-- Scalar mapping: String/Int/Float/Boolean/DateTime/Json/Decimal/BigInt/Bytes
-- Relations are `v.any()` in MVP (roadmap: relation handling)
+- **🎯 Advanced enum support**: Dedicated `enums.ts` with `v.picklist()` + value exports
+- **🧹 Clean schemas**: Relations automatically excluded for focused validation
+- **🔧 Full type coverage**: String/Int/Float/Boolean/DateTime/Json/Decimal/BigInt/Bytes/Arrays
+- **⚙️ Configurable**: `enumValue` option supports `@map` for custom enum values
+- **🛡️ Type-safe**: Runtime validation with comprehensive error handling
+- **📏 Lightweight**: Tree-shakeable exports, minimal runtime overhead
 
 ## Prerequisites
 
@@ -53,8 +57,9 @@ npm i -D prisma-valibot-generator
 
 ```prisma
 generator valibot {
-	provider = "prisma-valibot-generator"
-	output   = "./src/generated/valibot" // optional
+  provider  = "prisma-valibot-generator"
+  output    = "./src/generated/valibot" // optional
+  enumValue = "name" // optional: "name" (default) | "dbName" (for @map support)
 }
 ```
 
@@ -68,10 +73,127 @@ npx prisma generate
 
 ```ts
 import * as v from 'valibot';
-import { UserSchema, CreateUserSchema, UpdateUserSchema } from './src/generated/valibot';
+import { 
+  UserSchema, 
+  CreateUserSchema, 
+  UpdateUserSchema, 
+  RoleEnum,
+  RoleValues 
+} from './src/generated/valibot';
 
-v.parse(CreateUserSchema, { email: 'a@b.com' });
-v.parse(UpdateUserSchema, { name: 'New Name' });
+// Validate complete model data
+const user = v.parse(UserSchema, {
+  id: 1,
+  email: 'john@example.com',
+  name: 'John Doe',
+  role: 'ADMIN'
+});
+
+// Validate creation data (only required fields)
+const newUser = v.parse(CreateUserSchema, { 
+  email: 'jane@example.com',
+  password: 'secret123'
+});
+
+// Validate updates (all fields optional)
+const userUpdate = v.parse(UpdateUserSchema, { 
+  name: 'Jane Smith' 
+});
+
+// Validate enums
+const role = v.parse(RoleEnum, 'USER');
+
+// Access enum values for UI components
+console.log(RoleValues); // ['USER', 'ADMIN']
+```
+
+## Features
+
+### 🎯 Enum Support
+
+```prisma
+enum Role {
+  USER
+  ADMIN     @map("administrator")
+  MODERATOR @map("mod")
+}
+
+generator valibot {
+  provider  = "prisma-valibot-generator"
+  enumValue = "dbName" // Use @map values
+}
+```
+
+```ts
+import { RoleEnum, RoleValues } from './generated/valibot';
+
+// Generated enum values respect @map
+console.log(RoleValues); // ['USER', 'administrator', 'mod']
+
+// Validation works with mapped values
+v.parse(RoleEnum, 'administrator'); // ✅ Valid
+v.parse(RoleEnum, 'ADMIN');         // ❌ Invalid
+```
+
+### 🧹 Relation Handling
+
+Relations are automatically excluded from generated schemas for clean validation:
+
+```prisma
+model User {
+  id    Int    @id
+  email String
+  posts Post[] // Excluded from schemas
+}
+
+model Post {
+  id       Int  @id
+  title    String
+  author   User @relation(fields: [authorId], references: [id]) // Excluded
+  authorId Int  // Included - it's a scalar field
+}
+```
+
+### 🔧 Array Support
+
+Arrays are fully supported with proper validation:
+
+```prisma
+model User {
+  id       Int      @id
+  tags     String[]
+  scores   Int[]
+}
+```
+
+```ts
+const user = v.parse(UserSchema, {
+  id: 1,
+  tags: ['developer', 'typescript'],
+  scores: [95, 87, 92]
+});
+```
+
+### ⚙️ Configuration Options
+
+| Option | Values | Default | Description |
+|--------|--------|---------|-------------|
+| `output` | `string` | `"./generated"` | Output directory for generated files |
+| `enumValue` | `"name"` \| `"dbName"` | `"name"` | Whether to use enum names or `@map` values |
+
+## Error Handling
+
+The generator provides clear, actionable error messages:
+
+```bash
+# Invalid enum configuration
+❌ Invalid enumValue config: 'invalid'. Must be 'name' or 'dbName'.
+
+# Missing enum definition  
+❌ Enum 'Status' not found in schema. Available enums: Role, Priority
+
+# Empty enum
+❌ Enum 'Status' has no values. Enums must have at least one value.
 ```
 
 <!-- ## Docs & recipes -->

@@ -2,7 +2,7 @@ name: Semantic Release
 
 on:
   push:
-    branches: [ master, upgrade/prisma-and-dependencies ]
+    branches: [ master ]
   workflow_dispatch:
 
 jobs:
@@ -45,11 +45,6 @@ jobs:
         NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       run: npm run release
 
-    - name: Version docs for new release
-      env:
-        DOCS_VERSION_ON_PATCH: '1'
-      run: node scripts/auto-docs-version.mjs
-
     - name: Commit and push workflow mutations (if any)
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -60,9 +55,6 @@ jobs:
         git config user.name "github-actions[bot]"
         git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
         git add -A \
-          website/versioned_docs \
-          website/versioned_sidebars \
-          website/versions.json \
           package.json \
           package-lock.json \
           package/package.json \

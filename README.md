@@ -8,9 +8,6 @@
 		<a href="https://github.com/omar-dulaimi/prisma-valibot-generator/blob/master/LICENSE"><img alt="MIT" src="https://img.shields.io/badge/license-MIT-0a0a0a.svg"></a>
 		<img alt="TypeScript" src="https://img.shields.io/badge/types-TypeScript-blue.svg">
 		<img alt="Module formats" src="https://img.shields.io/badge/modules-ESM%20%2B%20CJS-444.svg">
-		<!-- Docs website temporarily disabled
-		<a href="https://omar-dulaimi.github.io/prisma-valibot-generator/"><img alt="Docs" src="https://img.shields.io/badge/docs-website-0ea5e9.svg"></a>
-		-->
 	</p>
         <sub>
                 Prisma → Valibot generator: zero‑boilerplate validation for your models.<br/>
@@ -18,7 +15,7 @@
         </sub>
 </div>
 
-<!-- Docs website temporarily disabled: https://omar-dulaimi.github.io/prisma-valibot-generator/ -->
+<!-- Documentation site removed for now -->
 
 ## Highlights
 
@@ -198,10 +195,6 @@ The generator provides clear, actionable error messages:
 
 <!-- ## Docs & recipes -->
 
-<!-- Docs website temporarily disabled:
-- Quick Start, concepts, and MVP notes: https://omar-dulaimi.github.io/prisma-valibot-generator/
--->
-
 ## Sponsor ❤️
 
 If this saves you time or prevents bugs, please consider sponsoring to support maintenance and new features.
@@ -215,4 +208,3 @@ PRs welcome. Keep diffs focused and discuss larger changes in an issue first. Se
 ## License
 
 MIT © [Omar Dulaimi](https://github.com/omar-dulaimi)
-
